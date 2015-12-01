@@ -1,0 +1,13 @@
+sonar.projectKey=sonar:grunt-sonar-runner:0.1.0
+sonar.projectName=Gruntsonar
+sonar.projectVersion=0.10
+ 
+sonar.language=js
+sonar.sources=sources
+sonar.sourceEncoding=UTF-8
+
+# Optional
+sonar.tests=/jasmineapp/spec/test_spec.js
+ 
+# To import the LCOV report
+sonar.javascript.lcov.reportPath=/coverage/lcov.info

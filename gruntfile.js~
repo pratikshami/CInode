@@ -1,51 +1,29 @@
 module.exports = function(grunt) {
-
-  grunt.initConfig({
-    jshint: {
-      files: ['spec/*_spec.js'],
-      options: {
-        globals: {
-          jQuery: true
-        }
-      }
-    },
-    watch: {
-      files: ['<%= jshint.files %>'],
-      tasks: ['jshint']
-    },
-
- /*jasmine_node: {
-    options: {
-      forceExit: true,
-      match: '.',
-      matchall: false,
-      extensions: 'js',
-      specNameMatcher: 'spec'
-    },
-    all: ['spec/']
-  }*/
-
-jasmine: {
+grunt.initConfig({
+    jasmine: {
         coverage: {
             src: 'functions.js',
             options: {
-                specs: 'spec/*_spec.js',
-                
+                specs: 'spec/test_spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
-                    coverage: 'bin/coverage/coverage.json',
-                    report: 'bin/coverage',
-                    thresholds: {
-                        lines: 75,
-                        statements: 75,
-                        branches: 75,
-                        functions: 90
-                    }
+                    coverage: 'reports/coverage.json',
+                    report: [
+                        {
+                            type: 'lcov',
+                            options: {
+                                dir: 'reports/lcov'
+                            }
+                        },
+                        {
+                            type: 'text-summary'
+                        }
+                    ]
                 }
             }
         }
     },
- sonarRunner: {
+sonarRunner: {
         analysis: {
             options: {
                 sonar: {
@@ -54,12 +32,12 @@ jasmine: {
                     },
                     jdbc: {
                         url: 'jdbc:mysql://localhost:3306/sonar',
-                        username: 'your-username-here',
-                        password: 'your-password-here'
+                        username: 'sonar',
+                        password: 'sonar'
                     },
-                    projectKey: 'your-unique-project-key-here',
-                    projectName: 'Your Project Name Here',
-                    projectVersion: '0.0.1',
+                    projectKey: 'sonar:grunt-sonar-runner:0.1.0',
+                    projectName: 'Gruntsonar',
+                    projectVersion: '0.10',
                     sources: 'scripts',
                     tests: 'tests',
                     javascript: {
@@ -72,18 +50,7 @@ jasmine: {
             }
         }
     }
-  });
-
-  
- 
-
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-jasmine-node');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
-grunt.loadNpmTasks('grunt-istanbul');
-
-  //grunt.registerTask('default', ['jshint']);
-grunt.registerTask('default', 'jasmine');
-
+grunt.loadNpmTasks('grunt-contrib-jasmine');
+grunt.loadNpmTasks('grunt-sonar-runner');
+grunt.registerTask('default', ['jasmine', 'sonarRunner']);
 };
